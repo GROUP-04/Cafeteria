@@ -1,0 +1,48 @@
+.root{
+    -fx-background-color: #FFFFFF;
+    -fx-font-size: 10pt;
+}
+.label{
+    -fx-text-fill: black;
+}
+.foodHeading{
+    -fx-alignment: center;
+    -fx-font-size: 20px;
+    -fx-text-alignment: center;
+}
+.label-Heading{
+    -fx-text-fill: #000000;
+    -fx-font-style: italic;
+    -fx-font-family: cursive;
+    -fx-font-size: 50pt;
+}
+
+.button{
+    -fx-background-color: darkcyan;
+    -fx-background-radius: 7pt;
+
+}
+.manMiddleLabel{
+    -fx-text-alignment: center;
+}
+.leftLayout{
+    -fx-border-color: #FFFFFF;
+    -fx-min-width: inherit;
+}
+.rightLayout{
+    -fx-border-color: #FFFFFF;
+}
+.salLeftLayout{
+    -fx-border-color: #FFFFFF;;
+    -fx-border-: 2;
+    -fx-padding: 10;
+}
+.subTotal{
+    -fx-border-color: #FFFFFF;
+    -fx-border-width: 2,0,0,0;
+    -fx-padding: 4;
+}
+
+.salmiddleLayout{
+    -fx-padding: 10;
+}
