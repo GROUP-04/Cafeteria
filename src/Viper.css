@@ -2,6 +2,8 @@
     -fx-background-color: #FFFFFF;
     -fx-font-size: 10pt;
 }
+.nothing{
+}
 .label{
     -fx-text-fill: black;
 }
