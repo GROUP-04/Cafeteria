@@ -56,6 +56,7 @@ public class SQLClass {
             ResultSet rs = st.executeQuery(sql);
             int count = 0;
             try{
+                //fetch rows from the result set
                 while(rs.next()){
                     ++count;
                 }
