@@ -5,5 +5,4 @@ Stock management
 Workers management
 Sales management
 
-Nothing
-Sheila
+
