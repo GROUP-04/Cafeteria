@@ -166,34 +166,10 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         SQLClass sql = new SQLClass();
+        //Create connection from the database
        Connection conn =  sql.connect();
-       /*ResultSet rs ; //sql.SelectFromDb(conn, "W13/21385/14", "@njokimuthoni");
-        sql.updateUserPass(conn, "W13/21385/14", "@njokimuthoni");
-        //sql.deactivateUser(conn, "W13/00002/14");
-        //sql.adduser(conn, "John4","Maina4","Muchiri4", "W13/00006/14","minor","@johnmaina4");
-        Double price = sql.getFoodPrice(conn, "Ugali");
-        System.out.println(price);
-        sql.addFoodItem(conn, "Pizza", 30.0);
-        sql.updateFoodPrice(conn , "Tea", 10.0);
-           /* try {
-                while(rs.next()) {
-                    String Fname = rs.getString("fname");
-                    String Sname = rs.getString("sname");
-                    String Lname = rs.getString("lname");
-                    String Level = rs.getString("level_of_operation");
-                    String pswd = rs.getString("pswd");
-
-                    System.out.println("Fname: " + Fname + " Fname: " + Sname + " sname: " + Lname + " Level: " + Level +"Password: "+pswd);
-
-                }
-            }catch (SQLException E){
-
-                System.out.println("There is no user with id ");
-
-            }*/
-        //}
-      // System.out.println(conn);
         launch(args);
+        //close connection when the program is closed
         sql.closeConnection(conn);
     }
 }
