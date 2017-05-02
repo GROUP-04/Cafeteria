@@ -100,7 +100,7 @@ public class Main extends Application {
                 }
 
                 if (pass.length() < 8) {
-                    passAlert.setText("Please input password, Password must be atleast eight characters");
+                    passAlert.setText("Please input password, the Password must be atleast eight characters");
                 } else {
                     System.out.println("Password is: " + pass);
                     passAlert.setText("");
@@ -128,7 +128,7 @@ public class Main extends Application {
                     }
                     else {
                         if (status.equals("notactive")) {
-                            deactivatedAccount.setText("Your account was deactivated please talk to the manager");
+                            deactivatedAccount.setText("Your account was deactivated please communicate with the manager");
                         } else {
                             if (level.equals("major")) {
                                 sql.login(conn, workerid );
