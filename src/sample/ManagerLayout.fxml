@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="594.0" prefWidth="725.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ManagerController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="View Bookings">
+            <items>
+              <MenuItem fx:id="viewNew" mnemonicParsing="false" onAction="#viewNewFunc" text="View New Bookings" />
+                  <MenuItem fx:id="viewAll" mnemonicParsing="false" onAction="#viewAllFunc" text="View All Bookings" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Manage Workers">
+            <items>
+              <MenuItem fx:id="addUser" mnemonicParsing="false" onAction="#addUserFunc" text="Add User..." />
+                  <MenuItem fx:id="activateUser" mnemonicParsing="false" onAction="#activateUserFunc" text="Activate User..." />
+                  <MenuItem fx:id="deactivateUser" mnemonicParsing="false" onAction="#deactivateUserFunc" text="Deactivate User..." />
+                  <MenuItem fx:id="resetUserPass" mnemonicParsing="false" onAction="#resetPassFunc" text="Reset User Password..." />
+                  <MenuItem fx:id="assignDuty" mnemonicParsing="false" onAction="#assignDutyFunc" text="Assign Duty" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <VBox prefHeight="569.0" prefWidth="312.0" style="-fx-border-color: #000; -fx-padding: 10;" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="stageHeader" text="Logged In Workers" />
+            <Label fx:id="loggedInUsers" />
+         </children>
+         <BorderPane.margin>
+            <Insets right="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="569.0" prefWidth="261.0" style="-fx-border-color: #000; -fx-padding: 10;" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="stageHeader" text="Available Food" />
+            <Label fx:id="availableFood" />
+         </children>
+      </VBox>
+   </center>
+   <right>
+      <VBox prefHeight="569.0" prefWidth="165.0" spacing="20.0" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
+         <children>
+            <Label styleClass="stageHeader" text="UPDATE MENU" />
+            <JFXButton fx:id="addNewFoodItem" onAction="#newFoodItem" style="-fx-background-color: #07899a;" text="New Food Item" />
+            <JFXButton fx:id="removeFoodItem" onAction="#deleteFoodItem" style="-fx-background-color: #07899a;" text="Remove Food Item" />
+            <JFXButton fx:id="addAvailableFood" onAction="#addToMenu" style="-fx-background-color: #07899a;" text="Add to Menu" />
+            <JFXButton fx:id="removeFromMenu" onAction="#removeFromMenu" style="-fx-background-color: #07899a;" text="Remove From Menu" />
+            <JFXButton fx:id="updatefoodPrice" onAction="#updateFoodPrice" style="-fx-background-color: #07899a;" text="Update Food price" />
+         </children>
+      </VBox>
+   </right>
+</BorderPane>

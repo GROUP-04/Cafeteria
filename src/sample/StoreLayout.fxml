@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="729.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.StoreController">
+   <top>
+      <MenuBar BorderPane.alignment="CENTER">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </top>
+   <left>
+      <VBox prefHeight="555.0" prefWidth="160.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="38.0" prefWidth="83.0" text="MENU">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="releaseToKitchenBtn" onAction="#releaseToKitchen" style="-fx-background-color: #0475ae;" text="Release to Kitchen" />
+            <JFXButton fx:id="takeInItemsBtn" onAction="#takeInItems" style="-fx-background-color: #0475ae;" text="Take in Items" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="555.0" prefWidth="597.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label prefHeight="39.0" prefWidth="173.0" text="CURRENT STOCK" VBox.vgrow="NEVER">
+               <font>
+                  <Font name="System Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            <TreeTableView fx:id="table" prefHeight="420.0" prefWidth="569.0">
+              <columns>
+                <TreeTableColumn prefWidth="165.0" text="Name" />
+                <TreeTableColumn prefWidth="168.0" text="Quantity" />
+              </columns>
+            </TreeTableView>
+            <JFXButton fx:id="loadReloadBtn" onAction="#loadReload" prefHeight="33.0" prefWidth="126.0" style="-fx-background-color: #0475ae;" text="Load/Reload table" />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>
