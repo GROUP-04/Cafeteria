@@ -16,6 +16,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -44,6 +48,10 @@ public class SalesPointController implements Initializable{
     public JFXComboBox<String> foodCodeField;
     public JFXTextField quantityField;
 
+    private static int count = 0;
+
+    public String workerId;
+
     public Alert alert = new Alert(Alert.AlertType.ERROR);
 
     public  ArrayList<ReceiptStructure> receipt = new ArrayList<>();
@@ -56,6 +64,8 @@ public class SalesPointController implements Initializable{
         cumulativeReceiptTextArea.setText(null);
         total = 0.0;
         receipt.clear();
+        quantityField.setText(null);
+        foodCodeField.setValue(null);
         receiptTextArea.setText(null);
     }
 
@@ -71,26 +81,37 @@ public class SalesPointController implements Initializable{
                 int count = 0;
                 String name = null;
                 Double price = 0.0;
+                int availability = 1;
 
                 while (rs.next()) {
                     name = rs.getString("FoodName");
                     price = rs.getDouble("Price_Per_Unit");
+                    availability = rs.getInt("Availability");
                     ++count;
+
                 }
 
                 if(count == 0 || count > 1){
                     alert.setHeaderText("Invalid foodCode");
+                    alert.setContentText("Food Code was invalid");
                     alert.show();
                 }else {
-                    receipt.add(new ReceiptStructure(name, quantity, foodCode, price));
-                    total += quantity * price;
-                    totalField.setText(total.toString());
-                    String newReceipt = "";
-                    for(ReceiptStructure obj: receipt){
-                        newReceipt += " "+ obj.getQuantity() + "\t\t" + obj.getName() + "\t\t" + obj.getUnitPrice() + "\n";
+                    if(availability == 0){
+                        alert.setHeaderText("Food Unavailable");
+                        alert.setContentText("Food requested is not available at the moment");
+                        alert.showAndWait();
+                    }else {
+                        receipt.add(new ReceiptStructure(name, quantity, foodCode, price));
+                        total += quantity * price;
+                        totalField.setText(total.toString());
+                        String newReceipt = "";
+                        for(ReceiptStructure obj: receipt){
+                            newReceipt += " "+ obj.getQuantity() + "\t\t" + obj.getName() + "\t\t" + obj.getUnitPrice() + "\n";
+                        }
+
+                        cumulativeReceiptTextArea.setText(newReceipt);
                     }
 
-                    cumulativeReceiptTextArea.setText(newReceipt);
 
                 }
             }catch (SQLException e){
@@ -104,14 +125,113 @@ public class SalesPointController implements Initializable{
 
     public void editReceiptFunc() {
 
+
+        Stage window = new Stage();
+        window.setTitle("Deactivate a  user");
+        window.initModality(Modality.APPLICATION_MODAL);
+
+        Label label = new Label("Update Receipt");
+
+        JFXTextField foodName = new JFXTextField();
+        foodName.setPromptText("Food Name");
+        foodName.setLabelFloat(true);
+        foodName.setFocusColor(Paint.valueOf("#1bbce0"));
+        foodName.setStyle("-fx-font-size: 20px");
+
+        JFXTextField quantity = new JFXTextField();
+        quantity.setPromptText("Quantity");
+        quantity.setLabelFloat(true);
+        quantity.setFocusColor(Paint.valueOf("#1bbce0"));
+        quantity.setStyle("-fx-font-size: 20px");
+
+
+        JFXButton updateReceipt = new JFXButton("Update Receipt");
+        updateReceipt.setStyle("-fx-background-color: #1bbce0");
+        updateReceipt.setOnAction(e -> {
+
+        });
+
+        JFXButton nextBtn = new JFXButton("Next Item");
+        nextBtn.setStyle("-fx-background-color: #1bbce0");
+        nextBtn.setOnAction( new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                foodName.setText(receipt.get(count).getName());
+                int qunt = receipt.get(count).getQuantity();
+                quantity.setText(String.valueOf(qunt));
+                ++count;
+            }
+
+        });
+
+        JFXButton doneBtn = new JFXButton("Done");
+        doneBtn.setStyle("-fx-background-color: #1bbce0");
+        doneBtn.setOnAction(e -> {
+            window.close();
+        });
+
+        HBox lowerLayout  = new HBox(10);
+        lowerLayout.getChildren().addAll(updateReceipt, nextBtn, doneBtn);
+
+        VBox mainLayout = new VBox(30);
+        mainLayout.setStyle("-fx-padding: 10");
+        mainLayout.getChildren().addAll(label, foodName, quantity, lowerLayout);
+
+        window.setScene(new Scene(mainLayout, 300, 300));
+        window.setTitle("Deduct From student Account");
+        window.showAndWait();
+
     }
 
     public void studentAccountFunc() {
+        Stage window = new Stage();
+        window.setTitle("Deactivate a  user");
+        window.initModality(Modality.APPLICATION_MODAL);
 
+        Label label = new Label("Amount to be deducted is: " + total);
+
+        JFXTextField studentReg = new JFXTextField();
+        studentReg.setPromptText("Enter student Reg No");
+        studentReg.setLabelFloat(true);
+        studentReg.setFocusColor(Paint.valueOf("#1bbce0"));
+        studentReg.setStyle("-fx-font-size: 20px");
+
+        JFXButton updateReceipt = new JFXButton("Deduct Amount");
+        updateReceipt.setStyle("-fx-background-color: #1bbce0");
+        updateReceipt.setOnAction(e -> {
+            if(studentReg.getText().equals("")){
+                //do nothing
+            }else {
+                sql.chargeStudent(conn, studentReg.getText(), label, total);
+            }
+        });
+
+
+        JFXButton doneBtn = new JFXButton("Done");
+        doneBtn.setStyle("-fx-background-color: #1bbce0");
+        doneBtn.setOnAction(e -> {
+            window.close();
+        });
+
+        HBox lowerLayout  = new HBox(10);
+        lowerLayout.getChildren().addAll(updateReceipt, doneBtn);
+
+        VBox mainLayout = new VBox(30);
+        mainLayout.setStyle("-fx-padding: 10");
+        mainLayout.getChildren().addAll(label, studentReg, lowerLayout);
+
+        window.setScene(new Scene(mainLayout, 300, 300));
+        window.setTitle("Deduct From student Account");
+        window.showAndWait();
     }
 
     public void viewReceiptFunc() {
-        //receiptTextArea.setText(receipt);
+       String newRe = "";
+       for(ReceiptStructure rec : receipt){
+           newRe += " "+ rec.getQuantity() + "\t\t" + rec.getName() + "\t\t" + rec.getUnitPrice() + "\n";
+       }
+
+       receiptTextArea.setText(newRe);
         totalField.setText(total.toString());
     }
 
@@ -119,8 +239,9 @@ public class SalesPointController implements Initializable{
         totalField.setText(total.toString());
     }
 
-    public void display(){
+    public void display(String workerid){
 
+        this.workerId = workerid;
         try {
             Parent layout = FXMLLoader.load(getClass().getResource("SalesPointLayout.fxml"));
             Screen screen = Screen.getPrimary();
