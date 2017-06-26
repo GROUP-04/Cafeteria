@@ -33,7 +33,7 @@ public class Main extends Application {
         double Height = bounds.getHeight();
         double Width = bounds.getWidth();
 
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("CAFETERIA MANAGEMENT SYSTEM");
         Main = primaryStage;
 
         Image icon = new Image("file:src/images/cafe.jpg");
