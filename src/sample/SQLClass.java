@@ -648,4 +648,41 @@ public class SQLClass {
         return rs;
     }
 
+    //Charge student account
+    //Method used at the salesPoint to get the foodPrice
+    public void chargeStudent(Connection conn, String reg, Label label, Double amount) {
+
+        try {
+            st = conn.createStatement();
+            String sql1 = "SELECT * FROM students WHERE RegNo = '" + reg + "'";
+            try {
+                rs = st.executeQuery(sql1);
+                Double amnt = 0.0;
+                int count = 0;
+                while(rs.next()){
+                    amnt = rs.getDouble("AccountBalance");
+                    ++count;
+                }
+                if(count > 1 || count ==0){
+                    label.setText("Registration Number is not correct");
+                }else{
+                    if(amnt < amount){
+                        label.setText("Insufficient account balance");
+                    }else {
+                        String sql4 = "UPDATE students SET AccountBalance = "+(amnt - amount)+" WHERE RegNo = '"+reg+"'";
+                        st.executeUpdate(sql4);
+                        label.setText("Amount Successfully deducted");
+                    }
+                }
+
+            } catch (SQLException ex) {
+                label.setText("Failed to execute database query");
+            }
+
+        } catch (SQLException ex) {
+            label.setText("Failed to fetch data from the database");
+
+        }
+    }
+
 }
