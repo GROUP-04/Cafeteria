@@ -1,23 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="763.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SalesPointController">
-   <center>
-      <VBox prefHeight="582.0" prefWidth="379.0" BorderPane.alignment="CENTER">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.SalesPointController">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <HBox prefHeight="532.0" prefWidth="695.0" spacing="10.0" style="-fx-background-color: #d6b898;" VBox.vgrow="ALWAYS">
          <children>
-            <Label text="Label" />
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" style="-fx-padding: 10;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="stageHeader" text="FOOD ITEM" />
+                  <HBox prefHeight="74.0" prefWidth="327.0" spacing="10.0">
+                     <children>
+                        <JFXComboBox fx:id="foodCodeField" editable="true" focusColor="#1bbce0" labelFloat="true" prefHeight="34.0" prefWidth="143.0" promptText="Food Code" HBox.hgrow="ALWAYS" />
+                        <JFXTextField fx:id="quantityField" focusColor="#1bbce0" labelFloat="true" prefHeight="25.0" prefWidth="137.0" promptText="Quantity">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXTextField>
+                     </children>
+                  </HBox>
+                  <JFXButton fx:id="addToReceipt" onAction="#addReceipt" prefHeight="35.0" prefWidth="69.0" style="-fx-background-color: #1bbce0;" text="ADD" />
+                  <JFXTextArea fx:id="cumulativeReceiptTextArea" editable="false" prefHeight="300.0" prefWidth="208.0" />
+                  <JFXButton fx:id="editReceipt" onAction="#editReceiptFunc" style="-fx-background-color: #1bbce0;" text="EDIT RECEIPT" />
+                  <JFXTextField fx:id="totalField" editable="false" focusColor="#1bbce0" labelFloat="true" prefHeight="25.0" prefWidth="303.0" promptText="TOTAL" VBox.vgrow="ALWAYS" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="stageHeader" text="RECEIPT" />
+                  <JFXTextArea fx:id="receiptTextArea" editable="false" prefHeight="506.0" prefWidth="254.0" />
+                  <HBox prefHeight="50.0" prefWidth="245.0" spacing="10.0">
+                     <children>
+                        <JFXButton fx:id="viewTotalButton" onAction="#viewTotalFunc" prefHeight="34.0" prefWidth="63.0" style="-fx-background-color: #1bbce0;" text="TOTAL" />
+                        <JFXButton fx:id="receiptButton" onAction="#viewReceiptFunc" prefHeight="35.0" prefWidth="59.0" style="-fx-background-color: #1bbce0;" text="RECEIPT" />
+                        <JFXButton fx:id="studentAccountButton" onAction="#studentAccountFunc" prefHeight="36.0" prefWidth="132.0" style="-fx-background-color: #1bbce0;" text="STUDENT ACCOUNT" />
+                        <JFXButton fx:id="resetButton" onAction="#ResetFunction" prefHeight="37.0" prefWidth="60.0" style="-fx-background-color: #1bbce0;" text="RESET" />
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox prefHeight="528.0" prefWidth="111.0" spacing="20.0" style="-fx-border-insets: 0, 0, 0, 1; -fx-border-color: #db0000; -fx-border-color: #000;" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label styleClass="stageHeader" text="AVAILABLE FOOD" />
+                  <Label fx:id="availableFoodLabel" />
+               </children>
+               <HBox.margin>
+                  <Insets bottom="5.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-      </VBox>
-   </center>
-   <right>
-      <VBox prefHeight="582.0" prefWidth="373.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="Label" />
-         </children>
-      </VBox>
-   </right>
-</BorderPane>
+      </HBox>
+   </children>
+</VBox>
