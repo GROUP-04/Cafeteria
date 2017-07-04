@@ -10,12 +10,13 @@ public class SQLClass {
     private Statement st;
     private ResultSet rs ;
     private Connection conn = null;
-//Sql methods
+
+    //Sql methods
 
     public Connection createConnection (Label label){
         final String USER = "root";
         final String PASSWORD = "gemini";
-        final String DB_URL = "jdbc:mysql://localhost/cafeteria";
+        final String DB_URL = "jdbc:mysql://localhost/cafeteria"+"?verifyServerCertificate=false"+"&useSSL=false"+"&requireSSL=false";
         final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 
         try{
@@ -616,14 +617,16 @@ public class SQLClass {
         }
     }
 
-    public ResultSet selectCurrentStock(Connection conn, Label label){
+    public ResultSet selectCurrentStock(Connection conn){
 
         String sql = "SELECT * FROM current_stock";
         try{
             st = conn.createStatement();
             rs = st.executeQuery(sql);
         }catch (SQLException e) {
-            label.setText("Failed to connect to the database");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Failed to connect to the database");
+            alert.showAndWait();
         }
         return rs;
     }
@@ -638,11 +641,16 @@ public class SQLClass {
                 rs = st.executeQuery(sql1);
 
             } catch (SQLException ex) {
-                System.out.println("Failed to execute database query");
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Failed to execute database query");
+                alert.showAndWait();
+
             }
 
         } catch (SQLException ex) {
-            System.out.println("Failed to fetch data from the database");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Failed to execute database query");
+            alert.showAndWait();
 
         }
         return rs;
@@ -682,6 +690,96 @@ public class SQLClass {
         } catch (SQLException ex) {
             label.setText("Failed to fetch data from the database");
 
+        }
+    }
+
+    public ResultSet getUser(Connection conn, String workerID){
+        String sql1 = "SELECT * FROM users WHERE WorkerId = '" + workerID + "'";
+        try{
+            st = conn.createStatement();
+            rs = st.executeQuery(sql1);
+
+        }catch (SQLException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Failed to add User");
+            alert.setContentText("Unable to get Cashiers name");
+            alert.showAndWait();
+        }
+        return rs;
+    }
+
+    public void addSale(Connection conn, Double totalCost, String receiptName){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("An Error occurred");
+        try{
+            st = conn.createStatement();
+            String sql = "INSERT INTO sales (totalCost, receiptName,)VALUES ('"+totalCost+"', '"+receiptName+"'";
+                try{
+                    int count = 0;
+                    while(rs.next()){
+                        ++count;
+                    }
+                    if(count == 0){
+                        try{
+                            st.executeUpdate(sql);
+                            alert.setContentText("Failed to update sales");
+                        }catch (SQLException ex){
+                            alert.setContentText("Unable to insert into the database");
+                            alert.showAndWait();
+                        }
+                    }
+                    else {
+                        alert.setContentText("Food item already exists");
+                        alert.showAndWait();
+                    }
+                }catch (SQLException ex){
+                    alert.setContentText("Unable to validate food name");
+                    alert.showAndWait();
+                }
+
+        }catch(SQLException ex){
+            alert.setContentText("Unable to check if food item already exists");
+            alert.showAndWait();
+        }
+    }
+
+    //Method to update the current stock table
+    public void sendToKitchen(Connection conn, String foodName, int quantity, Label label){
+
+        int Quantity = 0;
+        //SQL query to select the food item from the database
+        String sql = "SELECT Quantity FROM current_stock WHERE foodName='"+foodName+"'";
+
+
+        try{
+            st = conn.createStatement();
+            rs = st.executeQuery(sql);
+            int count = 0;
+            try{
+                while(rs.next()) {
+                    ++count;
+                    Quantity = Integer.parseInt(rs.getString("Quantity"));
+                }
+                if(count == 1){
+                    if(Quantity < quantity){
+                        label.setText("Incorrect quantity, Quantity in store is less than quantity requested");
+                    }else {
+                        int qnt = Quantity - quantity;
+
+                        //SQL statement to update the current stock table
+                        String sql2 = "UPDATE current_stock SET Quantity = '"+qnt+"' WHERE FoodName = '"+foodName+"'";
+                        st.executeUpdate(sql2);
+                        label.setText("Successfully updated stock");
+                    }
+                }else{
+                    label.setText("Incorrect food name");
+                }
+            }catch (SQLException e){
+                label.setText("Unable to fetch results");
+            }
+
+        }catch (SQLException e){
+            label.setText("Database connection failed");
         }
     }
 
