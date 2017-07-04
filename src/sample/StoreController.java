@@ -4,38 +4,58 @@ import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
-public class StoreController {
+public class StoreController implements Initializable{
 
     private Connection conn = MainController.conn;
     private SQLClass sql = new SQLClass();
     public JFXButton releaseToKitchenBtn;
     public JFXButton takeInItemsBtn;
-    ObservableList<currentStock> list = FXCollections.observableArrayList();
-    public TableView<currentStock> table;
+    private ObservableList<currentStock> list = FXCollections.observableArrayList();
+    public TableView<currentStock> tbl;
+    public TableColumn<currentStock, String> QuantityColumn;
+
+    public TableColumn<currentStock, Integer> NameColumn;
 
 
     public JFXButton loadReloadBtn;
 
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        QuantityColumn.setMinWidth(200);
+        QuantityColumn.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+
+        NameColumn.setMinWidth(200);
+        NameColumn.setCellValueFactory(new PropertyValueFactory<>("Foodname"));
+    }
+
     public void loadReload() {
 
         list.clear();
-        /*ResultSet rs = sql.selectCurrentStock(conn, errorLable);
+        list.clear();
+        ResultSet rs;
+        rs = sql.selectCurrentStock(conn);
         try{
             while(rs.next()){
                 list.add(new currentStock(Integer.parseInt(rs.getString("id")),
@@ -43,14 +63,60 @@ public class StoreController {
                         Integer.parseInt(rs.getString("Quantity"))));
             }
         }catch (SQLException e2){
-            //errorLable.setText("Unable to get elements from the database");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Unable to get elements from the database");
+            alert.showAndWait();
+
         }
-        table.setItems(list);*/
+        tbl.setItems(list);
 
     }
 
     public void releaseToKitchen() {
+        Stage windowRe = new Stage();
+        windowRe.setTitle("Release items to kitchen");
+        windowRe.initModality(Modality.APPLICATION_MODAL);
+        VBox mainLay = new VBox(10);
+        mainLay.setPadding(new Insets(20));
 
+        Label alertLabel = new Label();
+        HBox fnameLay = new HBox(15);
+        Label fLabel = new Label("Food Name: ");
+        ComboBox<String> fName = new ComboBox<>();
+        sql.selectFoodName(conn, fName, alertLabel);
+        fName.setPromptText("Food name");
+        fName.setEditable(true);
+        fnameLay.getChildren().addAll(fLabel, fName);
+
+        HBox quantityLay = new HBox(15);
+        Label qLabel = new Label("Quantity: ");
+        TextField quantityField = new TextField();
+        quantityField.setPromptText("Enter quantity");
+        quantityLay.getChildren().addAll(qLabel, quantityField);
+
+        HBox buttons = new HBox(10);
+        Button relButton = new Button("Release");
+        Button doneButton = new Button("Done");
+
+        buttons.getChildren().addAll(relButton, doneButton);
+
+        //Buttons Actions
+        relButton.setOnAction(e -> {
+            String foodName = fName.getValue();
+            int quantity = Integer.parseInt(quantityField.getText());
+            if(fName.getValue() != null && quantityField.getText() != null && quantity != 0){
+                sql.sendToKitchen(conn, foodName, quantity, alertLabel);
+            }
+        });
+
+        doneButton.setOnAction(e -> {
+            windowRe.close();
+        });
+
+        mainLay.getChildren().addAll(alertLabel, fnameLay, quantityLay,buttons);
+        Scene scene = new Scene(mainLay, 600, 500);
+        windowRe.setScene(scene);
+        windowRe.showAndWait();
     }
 
     public void takeInItems() {
@@ -122,8 +188,7 @@ public class StoreController {
     public void display(){
 
         try {
-            Parent layout = FXMLLoader.load(getClass().getResource("StoreLayout.fxml"));
-
+            BorderPane layout = FXMLLoader.load(getClass().getResource("StoreLayout.fxml"));
             Screen screen = Screen.getPrimary();
             Rectangle2D bounds = screen.getVisualBounds();
             double Height = bounds.getHeight();
@@ -134,14 +199,16 @@ public class StoreController {
             Scene scene = new Scene(layout, Width, Height);
             scene.getStylesheets().add("CafeteriaStyle.css");
             Stage window = new Stage();
-
             window.getIcons().add(icon);
-            window.setTitle("Manager");
+            window.setTitle("Cafeteria SalesPoint");
             window.setScene(scene);
             window.show();
 
         }catch (Exception E){
-            System.out.println();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("GUI failure");
+            alert.setContentText("Failed to load user interface content" + E);
+            alert.showAndWait();
         }
     }
 
