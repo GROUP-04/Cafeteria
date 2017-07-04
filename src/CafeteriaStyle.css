@@ -1,0 +1,39 @@
+.mainLayout{
+    -fx-background-image: url("/images/cafe.jpg");
+
+}
+.stageHeader{
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
+#salesRight{
+    -fx-border-width: 0.0 1.0 0.0 1.0;
+    -fx-border-color: #000;
+}
+#salesLeft{
+    -fx-border-width: 0.0 1.0 0.0 1.0;
+    -fx-border-color: #000;
+}
+#salesMid{
+    -fx-border-width: 0.0 1.0 0.0 1.0;
+    -fx-border-color: #000;
+}
+#rightHbox{
+    -fx-border-width: 1.0 0.0 1.0 0.0;
+    -fx-border-color: #000;
+    -fx-border-style: dashed;
+}
+
+#midTextArea{
+    -fx-border-width: 1.0 0.0 1.0 0.0;
+    -fx-border-color: #000;
+    -fx-border-style: dashed;
+}
+
+#topLabel{
+    -fx-border-width: 1.0 0.0 0.0 0.0;
+    -fx-border-color: #000;
+    -fx-border-style: dashed;
+}
