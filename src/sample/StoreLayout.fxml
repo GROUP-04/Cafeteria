@@ -54,12 +54,12 @@
                   <Font name="System Bold Italic" size="18.0" />
                </font>
             </Label>
-            <TreeTableView fx:id="table" prefHeight="420.0" prefWidth="569.0">
+            <TableView fx:id="tbl" prefHeight="420.0" prefWidth="569.0">
               <columns>
-                <TreeTableColumn prefWidth="165.0" text="Name" />
-                <TreeTableColumn prefWidth="168.0" text="Quantity" />
+                <TableColumn prefWidth="165.0" text="Name" />
+                <TableColumn prefWidth="168.0" text="Quantity" />
               </columns>
-            </TreeTableView>
+            </TableView>
             <JFXButton fx:id="loadReloadBtn" onAction="#loadReload" prefHeight="33.0" prefWidth="126.0" style="-fx-background-color: #0475ae;" text="Load/Reload table" />
          </children>
       </VBox>
